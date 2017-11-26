@@ -1,12 +1,12 @@
 <template>
-  <div class="hello">
-    <div>        
-        <img :src="logo" alt="This image contain a rabbit." id="logo">
+  <div class="hello">    
+    <div>          
+        <img src="../assets/Bugs.png" alt="This image contain a rabbit." id="logo">
         <p id="title">
             {{titlee}}
         </p>
         <button id="btn" @click="toggleMostrar()">Mostrar/Ocultar</button>
-        <div v-if="mostrar" id="lists">
+        <div v-if="algo" id="lists">          
             <ul>
                 <li v-for="(nodo,index) in nodos" :key="index">
                     <label>{{nodo.name}} from {{nodo.City}} </label>                            
@@ -21,20 +21,24 @@
 export default {
   name: "HelloWorld",
   props: {
-    titlee: string,
-    nodos: string,
-    mostrar: string,
-    logo: string
-  },
-  methods: {
-    toggleMostrar: function() {
-      this.mostrar = !this.mostrar;
-    }
+    titlee: String,
+    nodos: String,
+    mostrar: Boolean
   },
   data() {
     return {
+      algo: this.mostrar,
       msg: "Welcome to Your Vue.js App"
     };
+  },
+  methods: {
+    toggleMostrar: function() {
+      console.log(this.algo);
+      this.algo = !this.algo;
+    }
+  },
+  created:function(){
+    this.$http.get('http://localhost:8000/AnalyzePost/')
   }
 };
 </script>

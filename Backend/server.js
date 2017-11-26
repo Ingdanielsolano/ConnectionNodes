@@ -17,7 +17,7 @@ routes.configurar(app);
 
 facebook.Iniciar();
 //1702132073131493
-var request={
+/*var request={
     idUser:1025000047511369,
     idPost:1702132073131493
 }
@@ -27,8 +27,8 @@ facebook.AnalyzePost(request,1702132073131493);
 //"1744230332255000"
 //facebook.PostDone(1744230332255000);
 //facebook.PostDone(1025000047511369);
+*/
 
-
-var server = app.listen(8080, function () {
+var server = app.listen(8000, function () {
     console.log('Port: '+ server.address().port+"\n");
 })

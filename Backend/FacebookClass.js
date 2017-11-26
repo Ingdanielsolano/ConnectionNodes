@@ -3,7 +3,7 @@ var FB = require('fb');
 function FacebookClass() {
     var permission;
     this.Iniciar = function (datos, respuesta) {
-        permission = "EAACEdEose0cBAIABaVy2WMMdwppi6ygLZB7mbR4uHJddbWVZCKGdaqnVm4l1VFHvcHJg0KFuOY08RUD1LInakEdFMW3GjfQ6iAazHDy1h3xDZBvXUcC6xZCOzpPl3SKNJjc5PsUUZAnStbVQycjtlB4odofKVw4pXtETswh5wFVYqQCBvpOq0V1hqlsezvHk86NhqPknr5gZDZD";
+        permission = "EAACEdEose0cBAEgVJ4Rjf7nH7Iqt4DYtWg05ek8D1sx2LLI1WTibuZAhrtZAZBpn94RBNuVwj5iwqfzUvNVUVtnmAZAZADiDtQTTTVx9f1fhBX2LZC1sHN4ZAib7u1tRJ4iEO46uksLerFY1jjC36N5iA5sep3qkk2sZAaXAdPzZAHljT50rYJxGeghwLngtYMloZD";
     }
     //114444105238111?fields=location
     this.AnalyzePost = function (request, response) {
@@ -27,6 +27,15 @@ function FacebookClass() {
                                     fields: ['location'],
                                     access_token: permission
                                 }, dataLocation => {
+                                    Objectt:{
+                                        Name:String;
+                                        Latitude:String;
+                                        Longitude:String;
+                                    }
+                                    Objectt.Name=rs.from.name;
+                                    Objectt.latitude=dataLocation.location.latitude;
+                                    Objectt.longitude=dataLocation.location.longitude;
+                                    response.send(Objectt)
                                     console.log("Name: " + rs.from.name + "\nLocated in " + dataLocation.location.city + ", " + dataLocation.location.country + "\nLatitude: " + dataLocation.location.latitude + "\nLogintude: " + dataLocation.location.longitude + "\n");
                                     //console.log(dataLocation);                                
                                 })
