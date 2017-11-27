@@ -3,7 +3,7 @@ var FB = require('fb');
 function FacebookClass() {
     var permission;
     this.Iniciar = function (datos, respuesta) {
-        permission = "EAACEdEose0cBAEgVJ4Rjf7nH7Iqt4DYtWg05ek8D1sx2LLI1WTibuZAhrtZAZBpn94RBNuVwj5iwqfzUvNVUVtnmAZAZADiDtQTTTVx9f1fhBX2LZC1sHN4ZAib7u1tRJ4iEO46uksLerFY1jjC36N5iA5sep3qkk2sZAaXAdPzZAHljT50rYJxGeghwLngtYMloZD";
+        permission = "EAACEdEose0cBABBjnREfyvUZASYZBjjTphhRm6qAjcXZB1lrMiw95Mp9tQQg4zmeQ1wD9w9rNCEsZCWT3FxI1u4hZB5fdiX0nkJKKnP8As5TCZCqzVzC1ZBv89ZC7cojf6jjDZB3D4xWzyhczAQPXQk8EyUt8fahPEli11ZBP6D0jkCagKigHhKnptA5yA7fM8fE0tvfWIyhqYRwZDZD";
     }
     //114444105238111?fields=location
     this.AnalyzePost = function (request, response) {
@@ -27,14 +27,14 @@ function FacebookClass() {
                                     fields: ['location'],
                                     access_token: permission
                                 }, dataLocation => {
-                                    Objectt:{
-                                        Name:String;
-                                        Latitude:String;
-                                        Longitude:String;
+                                    Objectt: {
+                                        Name: String;
+                                        Latitude: String;
+                                        Longitude: String;
                                     }
-                                    Objectt.Name=rs.from.name;
-                                    Objectt.latitude=dataLocation.location.latitude;
-                                    Objectt.longitude=dataLocation.location.longitude;
+                                    Objectt.Name = rs.from.name;
+                                    Objectt.latitude = dataLocation.location.latitude;
+                                    Objectt.longitude = dataLocation.location.longitude;
                                     response.send(Objectt)
                                     console.log("Name: " + rs.from.name + "\nLocated in " + dataLocation.location.city + ", " + dataLocation.location.country + "\nLatitude: " + dataLocation.location.latitude + "\nLogintude: " + dataLocation.location.longitude + "\n");
                                     //console.log(dataLocation);                                
@@ -55,20 +55,60 @@ function FacebookClass() {
             }
         });
     }
-    this.PostDone = function (idUser) {
+
+    function SyncPostDone(rs, posts, callback) {
+        var post = {
+            id: "",
+            message: "",
+            picture: ""
+        };
+        FB.api(rs.id + "", {
+            fields: ['picture'],
+            access_token: permission
+        }, function (res2) {
+            post.id = rs.id;
+            post.message = rs.message;
+            post.picture = res2.picture;
+            posts.push(post);
+            callback(null, posts);
+        });
+    }
+
+    function SyncBigPostDone(res, posts, callback) {
+        post = {
+            id: "",
+            message: "",
+            picture: ""
+        };
+        count=0;
+        res.posts.data.map((rs, index) => {
+            SyncPostDone(rs, posts, result => {
+                count++;
+                if (count == res.posts.data.length - 1) {
+                    callback(null, posts);
+                }
+
+            })
+        })
+    }
+    this.PostDone = function (request, response) {
+        post = {
+            id: "",
+            message: "",
+            picture: ""
+        }
+        var posts = [];
         FB.api(request.idUser + "", {
             fields: ['posts'],
             access_token: permission
         }, function (res) {
-            //console.log(res);
-            res.posts.data.map(rs => {
-                console.log(rs);
+            SyncBigPostDone(res, posts, result => {
+                response.send(posts);
+                console.log(posts);
             })
-        });
-    }
 
-
-
+        })
+    };
 }
 
 module.exports = new FacebookClass();

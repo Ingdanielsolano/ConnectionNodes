@@ -5,11 +5,23 @@
         <p id="title">
             {{titlee}}
         </p>
-        <button id="btn" @click="toggleMostrar()">Mostrar/Ocultar</button>
+        <input v-model="data.idUser" placeholder="Id del usuario">        
+        <button id="btn" @click="toggleMostrar()">Buscar Post</button> 
+        <br/>
+        <br/>
+        <br/>
+        <br/>
         <div v-if="algo" id="lists">          
             <ul>
-                <li v-for="(nodo,index) in nodos" :key="index">
-                    <label>{{nodo.name}} from {{nodo.City}} </label>                            
+                <li v-for="(nodo,index) in nodos" :key="index">                  
+                  <div class="card" style="width: 20rem;margin-top:10%;">
+                      <img class="card-img-top" :src="nodo.picture" alt="Card image cap">
+                    <div class="card-body">
+                      <h4 class="card-title">Id: id: {{nodo.id}}</h4>
+                      <p class="card-text">Mensaje: {{nodo.message}} </p>
+                      <a href="#" class="btn btn-primary">Analizar</a>
+                    </div>      
+                  </div>
                 </li>
             </ul>
         </div>
@@ -22,23 +34,33 @@ export default {
   name: "HelloWorld",
   props: {
     titlee: String,
-    nodos: String,
     mostrar: Boolean
   },
   data() {
     return {
       algo: this.mostrar,
+      idPerson: "",
+      nodos: [],
+      data: {
+        idUser: ""
+      },
       msg: "Welcome to Your Vue.js App"
     };
   },
   methods: {
     toggleMostrar: function() {
-      console.log(this.algo);
+      this.$http
+        .post("http://localhost:8000/ViewPost", this.data, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(res => {
+          this.nodos = res.data;
+          console.log(res);
+        });
       this.algo = !this.algo;
     }
-  },
-  created:function(){
-    this.$http.get('http://localhost:8000/AnalyzePost/')
   }
 };
 </script>
