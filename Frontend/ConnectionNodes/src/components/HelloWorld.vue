@@ -19,17 +19,20 @@
                     <div class="card-body">
                       <h4 class="card-title">Id: id: {{nodo.id}}</h4>
                       <p class="card-text">Mensaje: {{nodo.message}} </p>
-                      <a href="#" class="btn btn-primary">Analizar</a>
+                      <button v-on:click="Analyze(nodo.id)" class="btn btn-primary">Analizar</button>                      
+                      <button v-on:click="go(nodo.id)" class="btn btn-primary">go</button>
                     </div>      
                   </div>
                 </li>
             </ul>
         </div>
-    </div>    
+    </div>        
   </div>
 </template>
 
 <script>
+import AnalyzePost from "./AnalyzePost.vue";
+
 export default {
   name: "HelloWorld",
   props: {
@@ -48,6 +51,25 @@ export default {
     };
   },
   methods: {
+    go:function(id){
+      this.$router.push("AnalyzePos");
+    },
+    Analyze: function(idPostt) {
+      var data= {
+        idPost: ""
+      }
+      data.idPost = idPostt;
+      console.log("going");
+      this.$http
+        .post("http://localhost:8000/AnalyzePost", data, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(res => {                    
+          console.log(res);
+        });
+    },
     toggleMostrar: function() {
       this.$http
         .post("http://localhost:8000/ViewPost", this.data, {
@@ -57,7 +79,7 @@ export default {
         })
         .then(res => {
           this.nodos = res.data;
-          console.log(res);
+          //console.log(res);
         });
       this.algo = !this.algo;
     }

@@ -3,7 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import VueResource from 'vue-resource';
+import VueRouter from 'vue-router';
 
+const router = new VueRouter({ routes });
 Vue.use(VueResource);
 Vue.config.productionTip = false
 
