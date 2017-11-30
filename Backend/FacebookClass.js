@@ -3,7 +3,7 @@ var FB = require('fb');
 function FacebookClass() {
     var permission;
     this.Iniciar = function (datos, respuesta) {
-        permission = "EAACEdEose0cBACfGvs1yBZCPOLF4ZArz9miCGRpXbAxx43137qqIdMQTQ3A7CxHohqZAcEMYHtpiFp2702lMvmDxKNhnSA4nH4mbYbnZBynAwOwtrMxHYozFUOu1BwV6IuIGZAFLKO1hrBY6U0dh1Op0GKsOBZActIrxKVZBjZCYZBmDLj7o0PbRLcl24Fb92s3XXlgt5K0qNCgZDZD";
+        permission = "EAACEdEose0cBAAppq7UaI75h7NrsOZAPiiVlCjdRUC4FwylliVHTBZBEjjyvJpmJ78ME17d5VPiQU4B77yKrBZBsZCUGdH1TM6dLXbrGKyjZCOB7oqcNdkKNIxBNwZA7QUB3lzhUOf5ZCA8bRZANV8jZB4TlUHvLDmKhwChUzHKfbaHJyrG6L1Qaw0h2UzQ19CfAZD";
     }
     //114444105238111?fields=location
 
@@ -19,6 +19,7 @@ function FacebookClass() {
             location.city = dataLocation.location.city;
             location.country = dataLocation.location.country;
             //response.send(Objectt)
+            //console.log(location);
             callback(null, location);
             //console.log("Name: " + location.Name + "\nLocated in " + location.city + ", " + location.country + "\nLatitude: " + location.latitude + "\nLogintude: " + location.longitude + "\n");
             //console.log(dataLocation);                                
@@ -63,8 +64,7 @@ function FacebookClass() {
             access_token: permission
         }, res2 => {
             SyncAnalyzePost3(rs, res2, person, result2 => {
-                //console.log(person);
-                
+                //console.log(person);                
                 callback(null, person);
             })
 
@@ -83,9 +83,9 @@ function FacebookClass() {
             count = 0;
             res.data.map(rs => {
                 SyncAnalyzePost2(rs, person, resultrs => {
-                    count++;                    
+                    count++;                                        
                     people.push(data={Name:person.Name,longitude:person.longitude,latitude:person.latitude,city:person.city,country:person.country});
-                    if (count == res.data.length - 1) {                                                
+                    if (count == res.data.length ) {                                                
                         callback(null, people);                        
                     }
                 })
@@ -170,6 +170,14 @@ function FacebookClass() {
 
         })
     };
+    this.searchByUser=function(name){
+        FB.api("search?q="+name+"&type=user",{
+            fields:['name','picture'],
+            access_token:permission
+        },function(res){
+            console.log(res);
+        })
+    }
 }
 
 module.exports = new FacebookClass();

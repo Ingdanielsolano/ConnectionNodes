@@ -1,6 +1,6 @@
 <template>
-  <div id="app">    
-    <HelloWorld :titlee="title" :mostrar="entrando"></HelloWorld>
+  <div id="app">        
+    <router-view></router-view>
   </div>
 </template>
 

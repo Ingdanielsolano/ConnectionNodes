@@ -4,14 +4,43 @@ import Vue from 'vue'
 import App from './App'
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
+import AnalyzePost from "./components/AnalyzePost.vue";
+import HelloWorld from './components/HelloWorld.vue';
+import * as VueGoogleMaps from 'vue2-google-maps';
 
-const router = new VueRouter({ routes });
+//import routes from 'vue-router';
+//import routess from './routess';
+
+
 Vue.use(VueResource);
-Vue.config.productionTip = false
+Vue.use(VueRouter);
+Vue.use(VueGoogleMaps,{
+  load:{
+    key:'AIzaSyArRBk2EQY9hC2QdOGDrCoafNky3I3jAro',
+    libraries:'places'
+  }
+})
+const router = new VueRouter({
+  routes: [{
+      path: '/',      
+      component: HelloWorld
+    },
+    {
+      path: '/AnalyzePost/:idPost',
+      name:'AnalyzePost',
+      component: AnalyzePost
+    }
+  ]
+});
+
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })

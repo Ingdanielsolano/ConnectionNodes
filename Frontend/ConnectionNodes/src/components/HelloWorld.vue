@@ -5,8 +5,10 @@
         <p id="title">
             {{titlee}}
         </p>
-        <input v-model="data.idUser" placeholder="Id del usuario">        
-        <button id="btn" @click="toggleMostrar()">Buscar Post</button> 
+        <div class="form-group">;
+          <input v-model="data.idUser" class="form-control" style="margin-left:42%;width:200px;" placeholder="Id del usuario" >       
+        </div>        
+        <button id="btn" class="btn btn-primary" @click="toggleMostrar()">Buscar Post</button> 
         <br/>
         <br/>
         <br/>
@@ -18,14 +20,13 @@
                       <img class="card-img-top" :src="nodo.picture" alt="Card image cap">
                     <div class="card-body">
                       <h4 class="card-title">Id: id: {{nodo.id}}</h4>
-                      <p class="card-text">Mensaje: {{nodo.message}} </p>
-                      <button v-on:click="Analyze(nodo.id)" class="btn btn-primary">Analizar</button>                      
-                      <button v-on:click="go(nodo.id)" class="btn btn-primary">go</button>
+                      <p class="card-text">Mensaje: {{nodo.message}} </p>                      
+                      <router-link :to="{name:'AnalyzePost',params:{idPost:nodo.id} }" class="btn btn-primary">Analizar</router-link>
                     </div>      
                   </div>
                 </li>
             </ul>
-        </div>
+        </div>                        
     </div>        
   </div>
 </template>
@@ -51,25 +52,7 @@ export default {
     };
   },
   methods: {
-    go:function(id){
-      this.$router.push("AnalyzePos");
-    },
-    Analyze: function(idPostt) {
-      var data= {
-        idPost: ""
-      }
-      data.idPost = idPostt;
-      console.log("going");
-      this.$http
-        .post("http://localhost:8000/AnalyzePost", data, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(res => {                    
-          console.log(res);
-        });
-    },
+    go: function(id) {},
     toggleMostrar: function() {
       this.$http
         .post("http://localhost:8000/ViewPost", this.data, {
@@ -90,7 +73,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1,
-h2 {
+h2 {  
   font-weight: normal;
 }
 ul {
