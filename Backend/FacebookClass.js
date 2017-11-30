@@ -3,7 +3,7 @@ var FB = require('fb');
 function FacebookClass() {
     var permission;
     this.Iniciar = function (datos, respuesta) {
-        permission = "EAACEdEose0cBAAppq7UaI75h7NrsOZAPiiVlCjdRUC4FwylliVHTBZBEjjyvJpmJ78ME17d5VPiQU4B77yKrBZBsZCUGdH1TM6dLXbrGKyjZCOB7oqcNdkKNIxBNwZA7QUB3lzhUOf5ZCA8bRZANV8jZB4TlUHvLDmKhwChUzHKfbaHJyrG6L1Qaw0h2UzQ19CfAZD";
+        permission = "EAACEdEose0cBACjrOdEROdZCSPHTuq9kJqLtIv7WoGRVg13q2tl504dt2AE0kAGG0NaK72IX6xLO5O2wfIV2SLRNQNO5WZCYJJmDJSzOciXy3bxDzeMpA7qSlZCWh6f5cnGl7rEFezdYr5eXgZBnNwZB2NbB6S1Aw9l7uOLssRgeC6LYjBKa1FiQMS5H2TMEo6esbPX0ulwZDZD";
     }
     //114444105238111?fields=location
 
@@ -20,6 +20,7 @@ function FacebookClass() {
             location.country = dataLocation.location.country;
             //response.send(Objectt)
             //console.log(location);
+            console.log(location);
             callback(null, location);
             //console.log("Name: " + location.Name + "\nLocated in " + location.city + ", " + location.country + "\nLatitude: " + location.latitude + "\nLogintude: " + location.longitude + "\n");
             //console.log(dataLocation);                                
@@ -59,6 +60,7 @@ function FacebookClass() {
             city: "",
             country: ""
         }
+        console.log("tercer paso");
         FB.api(rs.from.id + "", {
             fields: ['location'],
             access_token: permission
@@ -72,21 +74,30 @@ function FacebookClass() {
     }
 
     function SyncAnalyzePost(res, people, callback) {
-        person={
+        person = {
             Name: "",
             longitude: "",
             latitude: "",
             city: "",
             country: ""
-        }        
+        }
+        console.log("segundo paso");
+        //console.log(res);
         if (res.error == undefined) {
             count = 0;
             res.data.map(rs => {
                 SyncAnalyzePost2(rs, person, resultrs => {
-                    count++;                                        
-                    people.push(data={Name:person.Name,longitude:person.longitude,latitude:person.latitude,city:person.city,country:person.country});
-                    if (count == res.data.length ) {                                                
-                        callback(null, people);                        
+                    count++;
+                    console.log(count);
+                    people.push(data = {
+                        Name: person.Name,
+                        longitude: person.longitude,
+                        latitude: person.latitude,
+                        city: person.city,
+                        country: person.country
+                    });
+                    if (count == res.data.length) {
+                        callback(null, people);
                     }
                 })
             })
@@ -101,17 +112,19 @@ function FacebookClass() {
 
     }
 
-    this.AnalyzePost = function (request, response) {        
+    this.AnalyzePost = function (request, response) {
         people = [];
         FB.api(request.idPost + "/comments", {
             fields: [],
             access_token: permission
-        }, res => {
-            SyncAnalyzePost(res, people, result => {
-                console.log(people);
-                response.send(people);
-            })
-
+        }, res => {            
+            if (res.data.length>0) {
+                SyncAnalyzePost(res, people, result => {
+                    response.send(people);
+                })
+            }else{
+                response.send("No comments");
+            }
         });
     }
 
@@ -140,6 +153,7 @@ function FacebookClass() {
             picture: ""
         };
         count = 0;
+        //console.log(res);
         res.posts.data.map((rs, index) => {
             SyncPostDone(rs, posts, result => {
                 count++;
@@ -151,7 +165,6 @@ function FacebookClass() {
         })
     }
     this.PostDone = function (request, response) {
-        //console.log("se inicio esto :o ");
         post = {
             id: "",
             message: "",
@@ -162,20 +175,38 @@ function FacebookClass() {
             fields: ['posts'],
             access_token: permission
         }, function (res) {
-            SyncBigPostDone(res, posts, result => {
-                console.log(posts);
-                response.send(posts);
-                //console.log(posts);
-            })
+            if (res.error != undefined) {
+                if (res.error.message.includes("Session has expired")) {
+                    response.send("Please update token.");
+                }
+            } else {
+                SyncBigPostDone(res, posts, result => {
+                    //console.log(posts);
+                    response.send(posts);
+                    //console.log(posts);
+                })
+            }
 
         })
     };
-    this.searchByUser=function(name){
-        FB.api("search?q="+name+"&type=user",{
-            fields:['name','picture'],
-            access_token:permission
-        },function(res){
-            console.log(res);
+
+    this.searchByUser = function (request, response) {
+        users = []
+        FB.api("search?limit=99&q=" + request.nombre + "&type=user", {
+            fields: ['name', 'picture'],
+            access_token: permission
+        }, function (res) {
+            //console.log(res);
+            response.send(res);
+        })
+    }
+    this.searchMoreByUser = function (request, response) {
+        FB.api("search?limit=99&offset=" + request.numeroo + "&q=" + request.nombre + "&type=user", {
+            fields: ['name', 'picture'],
+            access_token: permission
+        }, function (res) {
+            console.log(res.data);
+            response.send(res.data);
         })
     }
 }

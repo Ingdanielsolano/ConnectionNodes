@@ -1,6 +1,7 @@
 <template>
 <div>
-<router-link to="/">Buscar Posts</router-link>  {{Analyze}}
+<router-link to="/">Buscar Posts</router-link>  
+{{Analyze}}
 <br/>
 <br/>
 <br/>
@@ -42,6 +43,7 @@ export default {
       var data = {
         idPost: ""
       };
+
       data.idPost = this.idPost;
       this.$http
         .post("http://localhost:8000/AnalyzePost", data, {
@@ -50,19 +52,23 @@ export default {
           }
         })
         .then(res => {
-          res.body.map(rs => {
-            if (rs.latitude != "Unauthorized") {
-              this.center = {
-                lat: rs.latitude,
-                lng: rs.longitude
-              };
-              var marca = {
-                label: rs.Name,
-                position: { lat: rs.latitude, lng: rs.longitude }
-              };
-              this.markers.push(marca);
-            }
-          });
+          if (res.body == "No comments") {
+            console.log("No comments");
+          } else {
+            res.body.map(rs => {
+              if (rs.latitude != "Unauthorized") {
+                this.center = {
+                  lat: rs.latitude,
+                  lng: rs.longitude
+                };
+                var marca = {
+                  label: rs.Name,
+                  position: { lat: rs.latitude, lng: rs.longitude }
+                };
+                this.markers.push(marca);
+              }
+            });
+          }
         });
     }
   }

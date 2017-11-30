@@ -21,7 +21,7 @@ var request={
     idUser:1025000047511369,
     idPost:1702132073131493
 }
-
+//facebook.searchByUser("daniel solano");
 //facebook.AnalyzePost(request,1702132073131493);
 //facebook.AnalyzePost(1744230332255000,1702132073131493);
 //"1744230332255000"

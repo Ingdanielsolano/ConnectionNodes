@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Posts from "./components/Posts";
 
 export default {
   name: "app",
   components: {
-    HelloWorld
+    Posts
   },
   data() {
     return {

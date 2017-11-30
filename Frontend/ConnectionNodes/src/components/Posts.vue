@@ -5,28 +5,23 @@
         <p id="title">
             {{titlee}}
         </p>
-        <div class="form-group">;
-          <input v-model="data.idUser" class="form-control" style="margin-left:42%;width:200px;" placeholder="Id del usuario" >       
-        </div>        
-        <button id="btn" class="btn btn-primary" @click="toggleMostrar()">Buscar Post</button> 
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+        {{Showa}}
         <div v-if="algo" id="lists">          
             <ul>
                 <li v-for="(nodo,index) in nodos" :key="index">                  
-                  <div class="card" style="width: 20rem;margin-top:10%;">
+                  <div class="card" style="width: 10rem;margin-top:10%;">
                       <img class="card-img-top" :src="nodo.picture" alt="Card image cap">
-                    <div class="card-body">
-                      <h4 class="card-title">Id: id: {{nodo.id}}</h4>
+                    <div class="card-body">                      
                       <p class="card-text">Mensaje: {{nodo.message}} </p>                      
                       <router-link :to="{name:'AnalyzePost',params:{idPost:nodo.id} }" class="btn btn-primary">Analizar</router-link>
                     </div>      
                   </div>
                 </li>
             </ul>
-        </div>                        
+        </div>   
+        <div v-if="error" >
+          <h4>{{msg}}</h4>
+        </div>                     
     </div>        
   </div>
 </template>
@@ -35,25 +30,26 @@
 import AnalyzePost from "./AnalyzePost.vue";
 
 export default {
-  name: "HelloWorld",
+  name: "Posts",
   props: {
     titlee: String,
-    mostrar: Boolean
+    mostrar: Boolean,
+    person: String
   },
   data() {
     return {
       algo: this.mostrar,
-      idPerson: "",
+      error:true,
+      idPerson: this.$route.params.idPerson,
       nodos: [],
       data: {
-        idUser: ""
+        idUser: this.$route.params.idPerson
       },
       msg: "Welcome to Your Vue.js App"
     };
   },
-  methods: {
-    go: function(id) {},
-    toggleMostrar: function() {
+  computed: {
+    Showa: function() {
       this.$http
         .post("http://localhost:8000/ViewPost", this.data, {
           headers: {
@@ -61,11 +57,27 @@ export default {
           }
         })
         .then(res => {
-          this.nodos = res.data;
+          if (res.body == "Please update token.") {
+            this.error=true;
+            this.msg=res.body+"\nPor favor actualiza el token.";            
+          } else {            
+            this.error=false;
+            this.nodos = res.data;
+            this.algo = true;
+            this.nodos.map((rs,index)=>{
+              if(rs.message!=undefined){
+                this.nodos[index].message=rs.message.substr(0,20)+"...";
+              }
+              console.log(rs.message);
+            })
+            //console.log(this.nodos);
+          }
           //console.log(res);
         });
-      this.algo = !this.algo;
     }
+  },
+  methods: {
+    go: function(id) {}
   }
 };
 </script>
@@ -73,7 +85,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1,
-h2 {  
+h2 {
   font-weight: normal;
 }
 ul {

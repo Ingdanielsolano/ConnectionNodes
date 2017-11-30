@@ -5,7 +5,8 @@ import App from './App'
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import AnalyzePost from "./components/AnalyzePost.vue";
-import HelloWorld from './components/HelloWorld.vue';
+import Posts from './components/Posts.vue';
+import Buscar from './components/Buscar.vue'
 import * as VueGoogleMaps from 'vue2-google-maps';
 
 //import routes from 'vue-router';
@@ -23,10 +24,15 @@ Vue.use(VueGoogleMaps,{
 const router = new VueRouter({
   routes: [{
       path: '/',      
-      component: HelloWorld
+      component: Buscar
     },
     {
-      path: '/AnalyzePost/:idPost',
+      path: '/Posts/:idPerson',
+      name:'Posts',
+      component: Posts
+    },
+    {
+      path: '/Hellow/:idPost',
       name:'AnalyzePost',
       component: AnalyzePost
     }
