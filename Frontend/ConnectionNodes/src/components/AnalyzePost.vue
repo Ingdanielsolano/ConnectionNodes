@@ -1,6 +1,6 @@
 <template>
 <div>
-<router-link to="/">Buscar Posts</router-link>  
+<router-link to="/ ">Seleccionar otra persona</router-link>  
 {{Analyze}}
 <br/>
 <br/>
@@ -64,8 +64,16 @@ export default {
                 var marca = {
                   label: rs.Name,
                   position: { lat: rs.latitude, lng: rs.longitude }
-                };
-                this.markers.push(marca);
+                };  
+                var algo=true;
+                for(var i=0; i<this.markers.length;i++){ 
+                  if(marca.label==this.markers[i].label){
+                    algo=false;
+                  }                  
+                }                                                  
+                if(algo){
+                  this.markers.push(marca);
+                }                
               }
             });
           }

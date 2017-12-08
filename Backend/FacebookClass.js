@@ -3,7 +3,7 @@ var FB = require('fb');
 function FacebookClass() {
     var permission;
     this.Iniciar = function (datos, respuesta) {
-        permission = "EAACEdEose0cBACjrOdEROdZCSPHTuq9kJqLtIv7WoGRVg13q2tl504dt2AE0kAGG0NaK72IX6xLO5O2wfIV2SLRNQNO5WZCYJJmDJSzOciXy3bxDzeMpA7qSlZCWh6f5cnGl7rEFezdYr5eXgZBnNwZB2NbB6S1Aw9l7uOLssRgeC6LYjBKa1FiQMS5H2TMEo6esbPX0ulwZDZD";
+        permission = "EAACEdEose0cBAFhcW8pIUXIUsygpeKkSG78wlrlAnoJHWH9yhocskFZA1PKPGrQPIuIn1IC2QYgfEphmZAbZBfHI3rZCvHw1RziDqrZCgjHdrzhBt8tdEonQu3yHgsB8QIxvBk1W8NUwzRKDcORq7OkvSdTclPxAWHLHcNjfZCBnyqHg5X0IFgruxazAi3IyOckIrdoZAUjEAZDZD";
     }
     //114444105238111?fields=location
 

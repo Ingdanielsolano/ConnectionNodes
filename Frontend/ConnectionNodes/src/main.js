@@ -27,6 +27,10 @@ const router = new VueRouter({
       component: Buscar
     },
     {
+      path: '/#/',      
+      component: Buscar
+    },
+    {
       path: '/Posts/:idPerson',
       name:'Posts',
       component: Posts

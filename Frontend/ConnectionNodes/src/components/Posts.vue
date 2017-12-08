@@ -6,6 +6,12 @@
             {{titlee}}
         </p>
         {{Showa}}
+        <div v-if="!algo">
+          <div class="loader">        
+          </div>
+          <h4 style="margin-left:5%;" >{{msg}}</h4>
+        </div>
+        
         <div v-if="algo" id="lists">          
             <ul>
                 <li v-for="(nodo,index) in nodos" :key="index">                  
@@ -18,10 +24,7 @@
                   </div>
                 </li>
             </ul>
-        </div>   
-        <div v-if="error" >
-          <h4>{{msg}}</h4>
-        </div>                     
+        </div>                   
     </div>        
   </div>
 </template>
@@ -45,7 +48,7 @@ export default {
       data: {
         idUser: this.$route.params.idPerson
       },
-      msg: "Welcome to Your Vue.js App"
+      msg: "Buscando"
     };
   },
   computed: {
@@ -99,4 +102,25 @@ li {
 a {
   color: #42b983;
 }
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid blue;
+  border-bottom: 16px solid blue; 
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  margin-left:45%; 
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>

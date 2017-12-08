@@ -1,5 +1,6 @@
 <template>
     <div class="hello">
+    <img src="../assets/logo.png" alt="CnLogo">
         <div>
             <div class="form-inline"style="margin-left:35%;">
                 <div class="form-group mx-sm-3"style="">
